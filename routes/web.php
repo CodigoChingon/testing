@@ -12,5 +12,5 @@
 */
 
 Route::get('/', function () {
-    return response('Hola Chingones', 404);
+    return view('welcome');
 });
