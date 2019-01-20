@@ -2,7 +2,10 @@
 
 namespace Tests;
 
+use Laravel\Dusk\Browser;
 use Laravel\Dusk\TestCase as BaseTestCase;
+use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\WebDriverDimension;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
@@ -40,5 +43,18 @@ abstract class DuskTestCase extends BaseTestCase
                 ChromeOptions::CAPABILITY, $options
             )
         );
+    }
+
+    protected function captureFailuresFor($browsers)
+    {
+        $browsers->each(function (Browser $browser, $key) {
+          $body = $browser->driver->findElement(WebDriverBy::tagName('body'));
+            if (!empty($body)) {
+                $currentSize = $body->getSize();
+                $size = new WebDriverDimension($currentSize->getWidth(), $currentSize->getHeight());
+                $browser->driver->manage()->window()->setSize($size);
+            }
+            $browser->screenshot('failure-'.$this->getName().'-'.$key);
+        });
     }
 }
