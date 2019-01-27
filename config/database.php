@@ -32,6 +32,13 @@ return [
     */
 
     'connections' => [
+        
+        'testingchingon' => [
+            'driver' => 'sqlite',
+            'database' => database_path('testingchingon.sqlite'),
+            'prefix' => '',
+            'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
+        ],
 
         'sqlite' => [
             'driver' => 'sqlite',
